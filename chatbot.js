@@ -2,9 +2,10 @@ let chatContainer = document.getElementById("widgetContainer")
 let openChat = document.getElementById("openChat")
 
 openChat.addEventListener("click", function() {
+	// öffnen des Chatbottes
 	chatContainer.classList.toggle("hidden")
 	openChat.classList.toggle("hidden")
-	
+	//erste Bot Nachricht wird erstellt
 	const messagesContainer = document.getElementById("messages");
 	let botText = document.createElement("span");
 	let botDiv = document.createElement("div");
@@ -13,7 +14,7 @@ openChat.addEventListener("click", function() {
 	botText.innerText = "schreibt...";
 	botDiv.appendChild(botText);
 	messagesContainer.appendChild(botDiv);
-	
+	// nach der Zeit wird der Text angezeigt
 	setTimeout(() => {
     botText.innerText = `Hallo, Sie sind hier mit dem 48H Chatbot verbunden. Wie kann ich ihnen helfen?`;
   }, 1200);
@@ -33,12 +34,13 @@ if (e.code === "Enter") {
 function output(input) {
   let product;
   let text = input.toLowerCase().replace(/[^\w\s\d]/gi, "");
+// ein paar Sonderfälle für überflüssige Wörter
   text = text
     .replace(/hallo /g, "")
     .replace(/hi /g, "")
     .replace(/ hi/g, "")
     .replace(/ hallo/g, "");
- 
+ // 
   if (compare(utterances, answers, text)) {
     product = compare(utterances, answers, text);
   } 
@@ -49,7 +51,7 @@ function output(input) {
   //update  DOM
   addChatEntry (input, product);
 }
-
+// alle möglichen Eingaben
 const utterances = [ 
   ["ich habe ein problem", "problem", "ich hab ein problem", "ich habe eine frage", "ich hab eine frage", "frage"],        //0
   ["besucher", "ich bin ein besucher", "kuenstler", "ich bin ein kuenstler"],      //1
@@ -62,7 +64,7 @@ const utterances = [
   ["darf ich für mein event eintritt verlangen", "muss ich etwas von meinen eingenommen spenden abgeben"] //8
 ]  
  
-// Possible responses corresponding to triggers
+// alle möglichen Antworten
  
 const answers = [
    [
@@ -85,27 +87,28 @@ const answers = [
  
 ];
  
-// For any other user input
+// Bot Antworten wenn die Eingabe nicht erkannt wird
  
 const alternatives = [
   "Entschuldigung ich habe Sie nicht verstanden, versuchen Sie es bitte erneut.",
   "Versuchen Sie eine andere Formulierung",
 ];
 
-// weißt dem Input eine Antwort anhand vom einem Index zu
+// weist dem Input eine Antwort anhand vom einem Index zu
 function compare(utterancesArray, answersArray, string) {
   let item;
   for (let x = 0; x < utterancesArray.length; x++) {
     for (let y = 0; y < utterancesArray[x].length; y++) {
       if (utterancesArray[x][y] === string) {
         items = answersArray[x];
+	 // zufällige Antwort wird aus dem Array ausgewählt
         item = items[Math.floor(Math.random() * items.length)];
         }
       }
    }
   return item;
 }
-
+// Die User und Bot Nachrichten werden dem Chat hinzugefügt
 function addChatEntry(input, product) {
   const messagesContainer = document.getElementById("messages");
   
@@ -123,7 +126,7 @@ function addChatEntry(input, product) {
   botDiv.appendChild(botText);
   messagesContainer.appendChild(botDiv);
  
- 
+ // die Bot Nachricht wird nach Ablauf der Zeit hinzugefügt
   setTimeout(() => {
     botText.innerText = `${product}`;
   }, 2000); }
